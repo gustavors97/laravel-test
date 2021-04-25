@@ -9,8 +9,8 @@ class CreateNumbersPreferencesTable extends Migration {
     public function up() {
         Schema::create('numbers_preferences', function (Blueprint $table) {
             $table->bigIncrements('id')->unique();
-            $table->bigInteger('number_id');
-            $table->foreign('number_id')->references('id')->on('numbers');
+            $table->unsignedBigInteger('number_id');
+            $table->foreign('number_id')->references('id')->on('numbers')->onDelete('cascade');
             $table->string('name', 255);
             $table->string('value', 255);
             $table->timestamps();

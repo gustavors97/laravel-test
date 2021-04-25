@@ -9,8 +9,8 @@ class CreateNumbersTable extends Migration {
     public function up() {
         Schema::create('numbers', function (Blueprint $table) {
             $table->bigIncrements('id')->unique();
-            $table->bigInt('customer_id');
-            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->unsignedBigInteger('customer_id');
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->string('number', 14);
             $table->enum('status', ['active', 'inactive', 'cancelled'])->default('active');
             $table->timestamps();

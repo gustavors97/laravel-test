@@ -9,8 +9,8 @@ class CreateCustomersTable extends Migration {
     public function up() {
         Schema::create('customers', function (Blueprint $table) {
             $table->bigIncrements('id')->unique();
-            $table->bigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('name', 255);
             $table->string('document', 12);
             $table->enum('status', ['new', 'active', 'suspended', 'cancelled'])->default('new');

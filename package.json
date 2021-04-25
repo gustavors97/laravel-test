@@ -2,17 +2,42 @@
     "private": true,
     "scripts": {
         "dev": "npm run development",
-        "development": "mix",
-        "watch": "mix watch",
+        "watch": "npm run development -- --watch --env.mixfile",
+        "watch-js": "npm run development -- --watch --env.mixfile webpack-js.mix.js",
+        "watch-sass": "npm run development -- --watch --env.mixfile webpack-sass.mix.js",
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
-        "prod": "npm run production",
-        "production": "mix --production"
+        "prod": "npm run production -- --env.mixfile webpack-sass.mix.js && npm run production -- --env.mixfile webpack-js.mix.js && npm run compress",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "compress": "bread-compressor -a gzip -l 4 -s public/css/npm/*.css public/js/npm/*.js"
     },
     "devDependencies": {
         "axios": "^0.21",
-        "laravel-mix": "^6.0.6",
-        "lodash": "^4.17.19",
-        "postcss": "^8.1.14"
+        "bread-compressor-cli": "^1.1.0",
+        "laravel-mix": "^5.0.9",
+        "lodash": "^4.17.21",
+        "postcss": "^8.1.14",
+        "vue-template-compiler": "^2.6.12"
+    },
+    "dependencies": {
+        "@babel/compat-data": "^7.13.8",
+        "@babel/preset-env": "^7.13.9",
+        "@fortawesome/fontawesome-free": "^5.15.3",
+        "babel-core": "^6.26.3",
+        "babel-loader": "^8.2.2",
+        "bootstrap": "^4.6.0",
+        "bootstrap-vue": "^2.21.2",
+        "cross-env": "^7.0.3",
+        "css-loader": "^3.6.0",
+        "jquery": "^3.6.0",
+        "laravel-mix-purgecss": "^4.1.0",
+        "npm": "^7.6.0",
+        "popper.js": "^1.16.1",
+        "sass": "^1.32.11",
+        "sass-loader": "^7.3.1",
+        "vue": "^2.6.12",
+        "vue-swal": "^1.0.0",
+        "vue-template-compiler": "^2.6.12"
     }
 }
