@@ -7,13 +7,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class User extends Authenticatable {
+class UserModel extends Authenticatable implements Auditable {
 
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes, \OwenIt\Auditing\Auditable;
+
+    protected $table = 'users';
 
     protected $fillable = [
-        'name', 'email', 'password'
+        'name', 'email', 'password', 'image'
     ];
 
     protected $hidden = [

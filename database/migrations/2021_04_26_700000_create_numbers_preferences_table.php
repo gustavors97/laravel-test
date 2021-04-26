@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateNumbersPreferencesTable extends Migration {
     
+    // Structure of the table NUMBERS_PREFERENCES
     public function up() {
         Schema::create('numbers_preferences', function (Blueprint $table) {
             $table->bigIncrements('id')->unique();

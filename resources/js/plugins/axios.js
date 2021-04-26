@@ -2,9 +2,10 @@ import axios from 'axios';
 
 const instance = axios.create({});
 const MAX_REQUESTS_COUNT = 5;
-const INTERVAL_MS = 1000;
+const INTERVAL_MS = 10000;
 let PENDING_REQUESTS = 0;
 
+// Controls the maximum number of requests in the range
 instance.interceptors.request.use(function (config) {
     return new Promise((resolve, reject) => {
         let interval = setInterval(() => {

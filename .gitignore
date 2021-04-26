@@ -16,3 +16,4 @@ yarn-error.log
 public/js/npm/
 public/css/npm/
 composer.lock
+public/mix-manifest.json

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CustomersRequest extends FormRequest {
+class CustomerRequest extends FormRequest {
 
     public function authorize() {
         // TODO: Verify this line:
@@ -16,6 +16,7 @@ class CustomersRequest extends FormRequest {
             'user_id'   => 'bail|required|numeric',
             'name'      => 'bail|required|max:255',
             'document'  => 'bail|required|min:6|max:12',
+            'image'     => 'bail|mimes:jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF|max:2048',
             'status'    => 'bail|required'
         ];
     }
@@ -31,6 +32,10 @@ class CustomersRequest extends FormRequest {
             'document.required' => 'The document field is required!',
             'document.min'      => 'The content of the document field does not have the minimum number of characters required!',
             'document.max'      => 'The content of the document field is too large!',
+
+            'image.image'       => 'Please, select an image file for send!',
+            'imagem.mimes'      => 'Select an image in format: .jpg, .jpeg, .png or .gif!',
+            'imagem.max'        => 'The image is too large! Max size is 2MB.',
 
             'status.required'   => 'The status field is required!'
         ];        

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateUsersTable extends Migration {
     
+    // Structure of the table USERS
     public function up() {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id')->unique();
@@ -13,6 +14,7 @@ class CreateUsersTable extends Migration {
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('image', 100)->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

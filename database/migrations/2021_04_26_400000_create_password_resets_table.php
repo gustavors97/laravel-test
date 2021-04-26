@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePasswordResetsTable extends Migration {
     
+    // Structure of the table PASSWORD_RESETS
     public function up() {
         Schema::create('password_resets', function (Blueprint $table) {
             $table->string('email')->index();

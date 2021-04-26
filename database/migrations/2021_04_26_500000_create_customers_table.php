@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateCustomersTable extends Migration {
     
+    // Structure of the table CUSTOMERS
     public function up() {
         Schema::create('customers', function (Blueprint $table) {
             $table->bigIncrements('id')->unique();

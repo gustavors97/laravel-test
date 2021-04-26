@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class NumbersRequest extends FormRequest {
+class NumberRequest extends FormRequest {
         
     public function authorize() {
         // TODO: Verify this line:

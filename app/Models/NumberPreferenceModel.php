@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class NumbersPreferencesModel extends Model {
+class NumberPreferenceModel extends Model implements Auditable {
     
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, \OwenIt\Auditing\Auditable;
 
     protected $table = 'numbers_preferences';
 
@@ -21,6 +22,6 @@ class NumbersPreferencesModel extends Model {
     ];
 
     public function number() {
-        return $this->belongsTo(NumbersModel::class);
+        return $this->belongsTo(NumberModel::class);
     }
 }

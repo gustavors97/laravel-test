@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'laravel-test'),
+    'name' => env('APP_NAME', 'Laravel Test'),
 
     /*
     |--------------------------------------------------------------------------
