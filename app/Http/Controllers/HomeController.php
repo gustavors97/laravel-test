@@ -9,9 +9,9 @@ class HomeController extends Controller {
     
     public function index() {
         if (Auth::check()) {
-            return view('home');
+            return redirect()->route('admin');
         } else {
-            return view('login');
+            return redirect()->route('login');
         }
     }
 }

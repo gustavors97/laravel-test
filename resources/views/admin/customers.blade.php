@@ -1,15 +1,10 @@
-@extends('templates/site')
+@extends('templates/admin')
 
-@section('title', 'Customers')
+@section('title', $title)
 
-@section('css')
-@endsection
+@section('admin_content')
 
-@section('content')
-
-    <h1 class="d-flex justify-content-center">Customers</h1>
-
-    <customers-list></customers-list>
+    <customers-list :paginate="10"></customers-list>
 
 @endsection
 

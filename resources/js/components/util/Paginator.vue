@@ -1,6 +1,6 @@
 <template>
     <div>
-
+        <p>PAGINATOR</p>
     </div>
 </template>
 

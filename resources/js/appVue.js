@@ -11,10 +11,10 @@ Vue.use(VueSwal);
 Vue.component('login', () => import(/* webpackChunkName: "login" */ './components/public/Login.vue'));
 
 // Components UTIL:
-Vue.component('text', () => import(/* webpackChunkName: "text" */ './components/util/Text.vue'));
-Vue.component('datatable', () => import(/* webpackChunkName: "datatable" */ './components/util/Datatable.vue'));
+Vue.component('paginator', () => import(/* webpackChunkName: "paginator" */ './components/util/Paginator.vue'));
 
 // Components ADMIN:
+Vue.component('sidebar', () => import(/* webpackChunkName: "sidebar" */ './components/admin/template/SideBar.vue'));
 Vue.component('customers-list', () => import(/* webpackChunkName: "customers-list" */ './components/admin/CustomersList.vue'));
 Vue.component('numbers-list', () => import(/* webpackChunkName: "numbers-list" */ './components/admin/NumbersList.vue'));
 

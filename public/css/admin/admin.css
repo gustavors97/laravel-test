@@ -1,0 +1,121 @@
+/*
+    SCROLL BAR
+*/
+/*  Largura da barra de rolagem  */
+::-webkit-scrollbar {width:10px}
+/*  Fundo da barra de rolagem  */
+::-webkit-scrollbar-track-piece {background-color:#e4eaf6; border-left:2px solid #e4eaf6}
+/* Cor do indicador de rolagem  */
+::-webkit-scrollbar-thumb:vertical {background-color:#BBB; border-radius:10px}
+/* Cor do indicador de rolagem em hover  */
+::-webkit-scrollbar-thumb:vertical:hover {background-color:#AAA}
+
+#wrapper {
+    overflow-x: hidden;
+}
+
+#sidebar-wrapper {
+    min-height: 100vh;
+    margin-left: -15rem;
+    background-color: #e7eef8 !important;
+    -webkit-transition: margin .25s ease-out;
+    -moz-transition: margin .25s ease-out;
+    -o-transition: margin .25s ease-out;
+    transition: margin .25s ease-out;
+}
+
+#sidebar-wrapper .sidebar-heading {
+    padding: 0.875rem 1.25rem;
+    font-size: 1.2rem;
+}
+
+#sidebar-wrapper .list-group {
+    width: 18rem;
+}
+
+#page-content-wrapper {
+    min-width: 100vw;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: 0;
+}
+
+@media (min-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #page-content-wrapper {
+        min-width: 0;
+        width: 100%;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: -15rem;
+    }
+}
+
+.top-radius-corner {
+    border-top-right-radius: 100px;
+    padding-top: 100px;
+}
+
+.list-menu {
+    background-color: #00aae9;
+    height: calc(100% - 148px) !important;
+}
+
+.item-title {
+    font-weight: bolder;
+    font-size: 4rem;
+}
+
+.list-group-item {
+    background-color: transparent;
+    border-top-left-radius: 50px !important;
+    border-bottom-left-radius: 50px !important;
+    color: white;
+    font-size: 1.2rem;
+    border: none !important;
+}
+
+.list-group-item:hover {
+    text-decoration: none;
+    color: white;
+}
+
+.list-group-item > span {
+    border-radius: 50px;
+    width: 50px;
+    height: 50px;
+}
+
+.menu-list-item-active {
+    background-color: rgba(255, 255, 255, .5);
+}
+
+.menu-list-item-active > span {
+    background-color: rgba(255, 255, 255, .2);
+}
+
+.btn-add-table {
+    background-color: #00aae9;
+    border: none;
+    outline: none;
+    color: white;
+    border-radius: 50px;
+}
+
+.btn-add-table:hover {
+    color: white;
+}
+
+.datatable > table {
+    background-color: #f7f7f8;
+    color: #8b8b9d;
+}
+
+.modal-content {
+    border-radius: 2rem;
+}

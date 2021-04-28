@@ -9,9 +9,16 @@ class LoginController extends Controller {
     
     public function index() {
         if (Auth::check()) {
-            return redirect()->route('home');
+            return redirect()->route('admin');
         } else {
             return view('login');
         }
+    }
+
+    public function logout(Request $request) {
+        $request->session()->flush();
+        Auth::logout();
+
+        return redirect()->route('login');
     }
 }

@@ -3,8 +3,9 @@
     "/js/npm/main.js": "/js/npm/main.js",
     "/js/npm/customers-list.js": "/js/npm/customers-list.js",
     "/js/npm/datatable.js": "/js/npm/datatable.js",
-    "/js/npm/numbers-list.js": "/js/npm/numbers-list.js",
-    "/js/npm/text.js": "/js/npm/text.js",
     "/js/npm/login.js": "/js/npm/login.js",
-    "/js/npm/vendors~login.js": "/js/npm/vendors~login.js"
+    "/js/npm/numbers-list.js": "/js/npm/numbers-list.js",
+    "/js/npm/vendors~login.js": "/js/npm/vendors~login.js",
+    "/js/npm/paginator.js": "/js/npm/paginator.js",
+    "/js/npm/sidebar.js": "/js/npm/sidebar.js"
 }

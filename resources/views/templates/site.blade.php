@@ -12,7 +12,7 @@
         <meta name="theme-color" content="#00A9E9"/>
         <meta name="apple-mobile-web-app-status-bar-style" content="#00A9E9"/>
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <link href="img/favicon.png" rel="shortcut icon">
+        <link href="{{ asset('img/favicon.svg') }}" rel="shortcut icon">
 
         <title>{{ config('app.name', 'LARAVEL TEST') }} - @yield('title')</title>
 

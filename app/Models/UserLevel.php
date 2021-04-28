@@ -7,21 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class NumberPreferenceModel extends Model implements Auditable {
-    
+class UserLevel extends Model implements Auditable {
+
     use HasFactory, SoftDeletes, \OwenIt\Auditing\Auditable;
 
-    protected $table = 'numbers_preferences';
+    protected $table = 'users_levels';
 
     protected $fillable = [
-        'number_id', 'name', 'value'
+        'user_id', 'level_id'
     ];
 
     protected $guarded = [
         'id', 'created_at', 'updated_at', 'deleted_at'
     ];
 
-    public function number() {
-        return $this->belongsTo(NumberModel::class);
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function level() {
+        return $this->belongsTo(Level::class, 'level_id', 'id');
     }
 }

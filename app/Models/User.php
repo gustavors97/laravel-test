@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class UserModel extends Authenticatable implements Auditable {
+class User extends Authenticatable implements Auditable {
 
     use HasFactory, Notifiable, SoftDeletes, \OwenIt\Auditing\Auditable;
 
@@ -32,6 +32,10 @@ class UserModel extends Authenticatable implements Auditable {
     ];
 
     public function customers() {
-        return $this->hasMany(CustomersModel::class);
+        return $this->hasMany(CustomersModel::class, 'user_id', 'id');
+    }
+
+    public function userLevels() {
+        return $this->hasMany(UserLevel::class, 'user_id', 'id');
     }
 }

@@ -8,12 +8,40 @@ class CustomerResource extends JsonResource {
     
     // Format the API response
     public function toArray($request) {
+        $numbers = [];
+        
+        foreach ($this->numbers as $number) {
+            $numberPreferences = [];
+
+            foreach ($number->numberPreferences as $preferences) {
+                $numberPreferences[] = [
+                    'id'    => $preferences->id,
+                    'name'  => $preferences->name,
+                    'value' => $preferences->value
+                ];
+            }
+
+            $numbers[] = [
+                'id' => $number->id,
+                'number' => $number->number,
+                'status' => $number->status,
+                'numberPreferences' => $numberPreferences
+            ];
+        }
+
         return [
             'id'       => $this->id,
-            'user'     => $this->user,
             'name'     => $this->name,
             'document' => $this->document,
-            'status'   => $this->status
+            'status'   => $this->status,
+            'date'     => $this->created_at,
+            'user'     => [
+                'id'    => $this->user->id,
+                'name'  => $this->user->name,
+                'email' => $this->user->email,
+                'image' => $this->user->image,
+            ],
+            'numbers'   => $numbers
         ];
     }
 }

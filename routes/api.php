@@ -7,8 +7,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// TODO: Adjust middleware auth here:
-Route::group(['prefix' => 'admin'], function() {
+Route::group(['prefix' => 'auth'], function() {
+    Route::post('login', 'Api\AuthController@login');
+});
+
+Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function() {
 
     Route::group(['prefix' => 'customer'], function() {
         Route::get('getCustomers', 'Api\CustomerController@getCustomers');

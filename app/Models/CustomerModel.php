@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class CustomerModel extends Model implements Auditable {
+class Customer extends Model implements Auditable {
     
     use HasFactory, SoftDeletes, \OwenIt\Auditing\Auditable;
 
@@ -22,10 +22,10 @@ class CustomerModel extends Model implements Auditable {
     ];
 
     public function user() {
-        return $this->belongsTo(UserModel::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function numbers() {
-        return $this->hasMany(NumberModel::class);
+        return $this->hasMany(Number::class, 'customer_id', 'id');
     }
 }

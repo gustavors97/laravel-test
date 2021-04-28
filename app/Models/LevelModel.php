@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class LevelModel extends Model implements Auditable {
+class Level extends Model implements Auditable {
 
     use HasFactory, SoftDeletes, \OwenIt\Auditing\Auditable;
 
@@ -20,4 +20,8 @@ class LevelModel extends Model implements Auditable {
     protected $guarded = [
         'id', 'created_at', 'updated_at', 'deleted_at'
     ];
+
+    public function userLevels() {
+        return $this->hasMany(UserLevel::class, 'level_id', 'id');
+    }
 }

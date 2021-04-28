@@ -4,23 +4,23 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
-use App\Models\{LevelModel, UserModel, UserLevelModel, CustomerModel, NumberModel, NumberPreferenceModel};
+use App\Models\{Level, User, UserLevel, Customer, Number, NumberPreference};
 
 class DatabaseSeeder extends Seeder {
 
     // Create initial records
     public function run() {
-        LevelModel::create(['type' => 'Admin']);
-        LevelModel::create(['type' => 'Customer']);
+        Level::create(['type' => 'admin']);
+        Level::create(['type' => 'customer']);
 
-        UserModel::create([
+        User::create([
             'name'     => 'Administrator',
             'email'    => 'admin@admin.com',
             'password' => bcrypt('admin'),
             'image'    => 'admin.svg'
         ]);
 
-        UserLevelModel::create([
+        UserLevel::create([
             'user_id'  => 1,
             'level_id' => 1
         ]);
@@ -29,37 +29,37 @@ class DatabaseSeeder extends Seeder {
         for ($i = 0; $i < 10; $i++) {
             $name = $faker->name;
 
-            $user = UserModel::create([
+            $user = User::create([
                 'name'     => $name,
                 'email'    => $faker->email,
                 'password' => bcrypt(Str::random(10))
             ]);
 
-            UserLevelModel::create([
+            UserLevel::create([
                 'user_id'  => $user->id,
                 'level_id' => 2
             ]);
 
-            $customer = CustomerModel::create([
+            $customer = Customer::create([
                 'user_id'  => $user->id,
                 'name'     => $name,
                 'document' => $faker->numerify('############'),
-                'status'   => 'new'
+                'status'   => 'active'
             ]);
 
-            $number = NumberModel::create([
+            $number = Number::create([
                 'customer_id' => $customer->id,
                 'number'      => $faker->numerify('##############'),
                 'status'      => 'active'
             ]);
 
-            NumberPreferenceModel::create([
+            NumberPreference::create([
                 'number_id' => $number->id,
                 'name'      => 'auto_attendant',
                 'value'     => '1'
             ]);
 
-            NumberPreferenceModel::create([
+            NumberPreference::create([
                 'number_id' => $number->id,
                 'name'      => 'voicemail_enabled',
                 'value'     => '1'
