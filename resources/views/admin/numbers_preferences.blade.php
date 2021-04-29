@@ -4,7 +4,7 @@
 
 @section('admin_content')
 
-    <h1 class="d-flex justify-content-center">{{ $title ?? 'Admin' }}</h1>
+    <numbers-preferences-list :paginate="10" />
 
 @endsection
 

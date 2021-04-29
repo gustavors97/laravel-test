@@ -1,48 +1,48 @@
 <template>
     <div class="col-12">
-        <button v-if="dataUser.levels.indexOf('admin') >= 0"
+        <button v-if="dataUserState.levels.indexOf('admin') >= 0"
             class="btn btn-add-table d-flex align-items-center ml-auto py-3 px-4 mr-3" 
             @click="openModal(null, 'create')">
             <i class="gg-math-plus mr-3"></i>
-            Add Customer
+            Add User
         </button>
 
-        <customers-modal v-if="dataUser.levels.indexOf('admin') >= 0"
+        <users-modal v-if="dataUserState.levels.indexOf('admin') >= 0"
             :modal_id="this.dataModalID" 
-            @onSubmitFormCustomer="getCustomers" 
-            ref="customers_modal" />
+            @onSubmitFormUsers="getUsers" 
+            ref="users_modal" />
 
         <div class="table-responsive pt-4 pr-3">
-            <table id="table-control-customer" class="table table-hover table-striped table-borderless">
+            <table id="table-control-user" class="table table-hover table-striped table-borderless">
                 <thead>
                     <tr>
                         <th scope="col" class="font-weight-bold text-truncate">#</th>
-                        <th scope="col" class="font-weight-bold text-truncate">Customer</th>
-                        <th scope="col" class="font-weight-bold text-truncate">Document</th>
-                        <th scope="col" class="font-weight-bold text-truncate">Status</th>
+                        <th scope="col" class="font-weight-bold text-truncate">Name</th>
+                        <th scope="col" class="font-weight-bold text-truncate">Email</th>
                         <th scope="col" class="font-weight-bold text-truncate">Date</th>
-                        <th v-if="dataUser.levels.indexOf('admin') >= 0" 
+                        <th v-if="dataUserState.levels.indexOf('admin') >= 0" 
                             scope="col" class="font-weight-bold text-truncate">
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(customer, index) in this.dataCustomers" :key="index" :id="customer.id">
-                        <th scope="row" class="text-truncate">{{ customer.id }}</th>
-                        <td class="text-truncate">{{ customer.name }}</td>
-                        <td class="text-truncate">{{ customer.document }}</td>
-                        <td class="text-truncate">{{ customer.status }}</td>
-                        <td class="text-truncate">{{ customer.date }}</td>
-                        <td v-if="dataUser.levels.indexOf('admin') >= 0"
+                    <tr v-for="(user, index) in this.dataUsers" :key="index" :id="user.id">
+                        <th scope="row" class="text-truncate">{{ user.id }}</th>
+                        <td class="text-truncate d-flex align-items-center">
+                            <img :src="`${dataMainPage}/img/${user.image||'user_default.svg'}`" class="rounded-circle shadow mr-3" width="30" height="30">
+                            {{ user.name }}
+                        </td>
+                        <td class="text-truncate">{{ user.email }}</td>
+                        <td class="text-truncate">{{ user.date }}</td>
+                        <td v-if="dataUserState.levels.indexOf('admin') >= 0"
                             class="text-truncate d-flex justify-content-end">
-
                             <button class="btn" type="button" aria-haspopup="true" aria-expanded="false" 
-                                @click="openModal(dataCustomers[index], 'update')" style="box-shadow: none">
+                                @click="openModal(dataUsers[index], 'update')" style="box-shadow: none">
                                 <i class="gg-pen mx-auto"></i>
                             </button>
 
                             <button class="btn" type="button" aria-haspopup="true" aria-expanded="false" 
-                                @click="remove(customer.id)" style="box-shadow: none">
+                                @click="remove(user.id)" style="box-shadow: none">
                                 <i class="gg-trash"></i>
                             </button>
                         </td>
@@ -59,7 +59,7 @@
 <script>
 
 import paginator from '../util/Paginator';
-import CustomersModal from './CustomersModal';
+import UsersModal from './UsersModal';
 
 export default {
     props: {
@@ -76,18 +76,19 @@ export default {
     watch: {},
 
     components: {
-        paginator, CustomersModal
+        paginator, UsersModal
     },
 
     data() {
         return {
-            dataUser: this.$store.state.user,
-            dataCustomers: [],
-            dataCustomer: null,
+            dataUserState: this.$store.state.user,
+            dataUsers: [],
+            dataUser: null,
             dataPaginate: this.paginate,
             dataCurrentPage: 1,
             dataLastPage: 1,
-            dataModalID: 'newCustomerModal',
+            dataMainPage: window.location.origin,
+            dataModalID: 'newUserModal',
             dataType: 'create',
             dataLoading: true
         };
@@ -97,7 +98,7 @@ export default {
     created() {},
     beforeMount() {},
     mounted() {
-        this.getCustomers(this.dataCurrentPage);
+        this.getUsers(this.dataCurrentPage);
     },
     beforeUpdate() {},
     updated() {},
@@ -105,12 +106,12 @@ export default {
     destroyed() {},
 
     methods: {
-        getCustomers() {
+        getUsers() {
             this.dataLoading = true;
 
-            this.$axios.get(`/api/admin/customer/index?paginate=${this.dataPaginate}&page=${this.dataCurrentPage}`).then(response => {
+            this.$axios.get(`/api/admin/user/index?paginate=${this.dataPaginate}&page=${this.dataCurrentPage}`).then(response => {
                 if (response.status == 200) {
-                    this.dataCustomers = response.data.data;
+                    this.dataUsers = response.data.data;
                     this.dataCurrentPage = response.data.meta.current_page;
                     this.$refs.paginator.dataLastPage = response.data.meta.last_page;
                     this.$refs.paginator.dataCurrentPage = this.dataCurrentPage;
@@ -122,13 +123,13 @@ export default {
                 }
 
             }).catch(error => {
-                console.error('CustomersList.vue - Exception on method getCustomers()', error);
+                console.error('UsersList.vue - Exception on method getUsers()', error);
             });
         },
 
         openModal(data, type) {            
-            this.$refs.customers_modal.dataCustomer = (data || this.createDefaultObject());
-            this.$refs.customers_modal.dataType = type;
+            this.$refs.users_modal.dataUser = (data || this.createDefaultObject());
+            this.$refs.users_modal.dataType = type;
             $(`#${this.dataModalID}`).modal('show');
         },
 
@@ -143,7 +144,7 @@ export default {
                 }
             }).then((result) => {
                 if (result) {
-                    this.$axios.delete(`/api/admin/customer/delete`, {
+                    this.$axios.delete(`/api/admin/user/delete`, {
                         data: { 
                             id: id,
                             page: this.dataCurrentPage,
@@ -155,7 +156,7 @@ export default {
 
                             if (data.status) {
                                 swal('Success', (data.message || 'OK'), 'success');
-                                this.getCustomers();
+                                this.getUsers();
 
                             } else {
                                 swal('Ops', (data.message || 'Error'), 'error');
@@ -165,7 +166,7 @@ export default {
                             console.warn(response);
                         }
                     }).catch(error => {
-                        console.error('CustomersList.vue - Exception on method remove()', error);
+                        console.error('UsersList.vue - Exception on method remove()', error);
                     });
                 }
             });
@@ -175,38 +176,19 @@ export default {
             return {
                 id: null,
                 name: null,
-                status: 'new',
-                document: null,
-                numbers: [
-                    {
-                        id: null,
-                        number: null,
-                        numbersPreferences: [
-                            {
-                                id: null,
-                                name: null,
-                                value: 0
-                            }
-                        ]
-                    }
-                ],
-                user: {
-                    id: null,
-                    name: null,
-                    email: null,
-                    image: null
-                }
+                email: null,
+                image: null
             };
         },
 
         paginateChanged(data) {
             this.dataPaginate = data ? parseInt(data) : 10;
-            this.getCustomers();
+            this.getUsers();
         },
 
         loadPage(data) {
             this.dataCurrentPage = data;
-            this.getCustomers();
+            this.getUsers();
         }
     }
 };

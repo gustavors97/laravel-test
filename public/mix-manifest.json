@@ -2,10 +2,19 @@
     "/js/npm/components.js": "/js/npm/components.js",
     "/js/npm/main.js": "/js/npm/main.js",
     "/js/npm/customers-list.js": "/js/npm/customers-list.js",
-    "/js/npm/datatable.js": "/js/npm/datatable.js",
+    "/js/npm/customers-list~customers-modal.js": "/js/npm/customers-list~customers-modal.js",
+    "/js/npm/customers-modal.js": "/js/npm/customers-modal.js",
+    "/js/npm/levels-list.js": "/js/npm/levels-list.js",
+    "/js/npm/levels-modal.js": "/js/npm/levels-modal.js",
     "/js/npm/login.js": "/js/npm/login.js",
     "/js/npm/numbers-list.js": "/js/npm/numbers-list.js",
-    "/js/npm/vendors~login.js": "/js/npm/vendors~login.js",
+    "/js/npm/numbers-modal.js": "/js/npm/numbers-modal.js",
+    "/js/npm/numbers-preferences-list.js": "/js/npm/numbers-preferences-list.js",
+    "/js/npm/numbers-preferences-modal.js": "/js/npm/numbers-preferences-modal.js",
     "/js/npm/paginator.js": "/js/npm/paginator.js",
-    "/js/npm/sidebar.js": "/js/npm/sidebar.js"
+    "/js/npm/sidebar.js": "/js/npm/sidebar.js",
+    "/js/npm/user-dropdown.js": "/js/npm/user-dropdown.js",
+    "/js/npm/users-list.js": "/js/npm/users-list.js",
+    "/js/npm/users-modal.js": "/js/npm/users-modal.js",
+    "/js/npm/vendors~customers-list~levels-list~login~numbers-list~numbers-preferences-list~paginator~users-list.js": "/js/npm/vendors~customers-list~levels-list~login~numbers-list~numbers-preferences-list~paginator~users-list.js"
 }

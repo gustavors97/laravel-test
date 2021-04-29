@@ -14,7 +14,7 @@ class Level extends Model implements Auditable {
     protected $table = 'levels';
 
     protected $fillable = [
-        'type'
+        'type', 'can_view'
     ];
 
     protected $guarded = [

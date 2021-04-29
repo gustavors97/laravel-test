@@ -10,8 +10,8 @@ class DatabaseSeeder extends Seeder {
 
     // Create initial records
     public function run() {
-        Level::create(['type' => 'admin']);
-        Level::create(['type' => 'customer']);
+        Level::create(['type' => 'admin', 'can_view' => 'customers,numbers,numbers_preferences,users,levels,logs']);
+        Level::create(['type' => 'customer', 'can_view' => 'customers,numbers,numbers_preferences']);
 
         User::create([
             'name'     => 'Administrator',

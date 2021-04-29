@@ -48,9 +48,25 @@
 </template>
 
 <script>
+
+import { mapGetters } from 'vuex';
+
 export default {
     props: {},
-    computed: {},
+    computed: {
+         ...mapGetters({
+            user: 'user'
+        }),
+
+        user: {
+            get() {
+                return this.user
+            },
+            set(user) {
+                return user
+            } 
+        }
+    },
     watch: {},
     components: {},
 
@@ -101,9 +117,15 @@ export default {
                 }).then(response => {
                     if (response.status == 200) {
                         if (response.data.status) {
+                            // Add userinfo in store
+                            this.user = response.data.user;
+                            this.$store.commit('userinfo', response.data.user);
+
+                            // Redirect to admin page
                             window.location = (response.data.url || '/admin');
+
                         } else {
-                            this.$swal('Ops', response.data.message, 'warning')
+                            this.$swal('Ops', (response.data.message || 'Failed to login'), 'warning')
                             this.form.login.text = 'Get Started';
                             this.form.login.disabled = false;
                         }

@@ -119,3 +119,11 @@
 .modal-content {
     border-radius: 2rem;
 }
+
+.btn-modal {
+    border-radius: 50px;
+}
+
+th {
+    font-size: 1.3rem;
+}

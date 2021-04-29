@@ -4,22 +4,21 @@
             class="btn btn-add-table d-flex align-items-center ml-auto py-3 px-4 mr-3" 
             @click="openModal(null, 'create')">
             <i class="gg-math-plus mr-3"></i>
-            Add Customer
+            Add Level
         </button>
 
-        <customers-modal v-if="dataUser.levels.indexOf('admin') >= 0"
+        <levels-modal v-if="dataUser.levels.indexOf('admin') >= 0"
             :modal_id="this.dataModalID" 
-            @onSubmitFormCustomer="getCustomers" 
-            ref="customers_modal" />
+            @onSubmitFormLevel="getLevels" 
+            ref="levels_modal" />
 
         <div class="table-responsive pt-4 pr-3">
-            <table id="table-control-customer" class="table table-hover table-striped table-borderless">
+            <table id="table-control-level" class="table table-hover table-striped table-borderless">
                 <thead>
                     <tr>
                         <th scope="col" class="font-weight-bold text-truncate">#</th>
-                        <th scope="col" class="font-weight-bold text-truncate">Customer</th>
-                        <th scope="col" class="font-weight-bold text-truncate">Document</th>
-                        <th scope="col" class="font-weight-bold text-truncate">Status</th>
+                        <th scope="col" class="font-weight-bold text-truncate">Type</th>
+                        <th scope="col" class="font-weight-bold text-truncate">Can view</th>
                         <th scope="col" class="font-weight-bold text-truncate">Date</th>
                         <th v-if="dataUser.levels.indexOf('admin') >= 0" 
                             scope="col" class="font-weight-bold text-truncate">
@@ -27,22 +26,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(customer, index) in this.dataCustomers" :key="index" :id="customer.id">
-                        <th scope="row" class="text-truncate">{{ customer.id }}</th>
-                        <td class="text-truncate">{{ customer.name }}</td>
-                        <td class="text-truncate">{{ customer.document }}</td>
-                        <td class="text-truncate">{{ customer.status }}</td>
-                        <td class="text-truncate">{{ customer.date }}</td>
+                    <tr v-for="(level, index) in this.dataLevels" :key="index" :id="level.id">
+                        <th scope="row" class="text-truncate">{{ level.id }}</th>
+                        <td class="text-truncate">{{ level.type }}</td>
+                        <td class="text-truncate">{{ level.can_view }}</td>
+                        <td class="text-truncate">{{ level.date }}</td>
                         <td v-if="dataUser.levels.indexOf('admin') >= 0"
                             class="text-truncate d-flex justify-content-end">
-
                             <button class="btn" type="button" aria-haspopup="true" aria-expanded="false" 
-                                @click="openModal(dataCustomers[index], 'update')" style="box-shadow: none">
+                                @click="openModal(dataLevels[index], 'update')" style="box-shadow: none">
                                 <i class="gg-pen mx-auto"></i>
                             </button>
 
                             <button class="btn" type="button" aria-haspopup="true" aria-expanded="false" 
-                                @click="remove(customer.id)" style="box-shadow: none">
+                                @click="remove(level.id)" style="box-shadow: none">
                                 <i class="gg-trash"></i>
                             </button>
                         </td>
@@ -59,7 +56,7 @@
 <script>
 
 import paginator from '../util/Paginator';
-import CustomersModal from './CustomersModal';
+import LevelsModal from './LevelsModal';
 
 export default {
     props: {
@@ -76,18 +73,18 @@ export default {
     watch: {},
 
     components: {
-        paginator, CustomersModal
+        paginator, LevelsModal
     },
 
     data() {
         return {
             dataUser: this.$store.state.user,
-            dataCustomers: [],
-            dataCustomer: null,
+            dataLevels: [],
+            dataLevel: null,
             dataPaginate: this.paginate,
             dataCurrentPage: 1,
             dataLastPage: 1,
-            dataModalID: 'newCustomerModal',
+            dataModalID: 'newLevelModal',
             dataType: 'create',
             dataLoading: true
         };
@@ -97,7 +94,7 @@ export default {
     created() {},
     beforeMount() {},
     mounted() {
-        this.getCustomers(this.dataCurrentPage);
+        this.getLevels(this.dataCurrentPage);
     },
     beforeUpdate() {},
     updated() {},
@@ -105,12 +102,12 @@ export default {
     destroyed() {},
 
     methods: {
-        getCustomers() {
+        getLevels() {
             this.dataLoading = true;
 
-            this.$axios.get(`/api/admin/customer/index?paginate=${this.dataPaginate}&page=${this.dataCurrentPage}`).then(response => {
+            this.$axios.get(`/api/admin/level/index?paginate=${this.dataPaginate}&page=${this.dataCurrentPage}`).then(response => {
                 if (response.status == 200) {
-                    this.dataCustomers = response.data.data;
+                    this.dataLevels = response.data.data;
                     this.dataCurrentPage = response.data.meta.current_page;
                     this.$refs.paginator.dataLastPage = response.data.meta.last_page;
                     this.$refs.paginator.dataCurrentPage = this.dataCurrentPage;
@@ -122,16 +119,16 @@ export default {
                 }
 
             }).catch(error => {
-                console.error('CustomersList.vue - Exception on method getCustomers()', error);
+                console.error('LevelsList.vue - Exception on method getLevels()', error);
             });
         },
 
         openModal(data, type) {            
-            this.$refs.customers_modal.dataCustomer = (data || this.createDefaultObject());
-            this.$refs.customers_modal.dataType = type;
+            this.$refs.levels_modal.dataLevel = (data || this.createDefaultObject());
+            this.$refs.levels_modal.dataType = type;
             $(`#${this.dataModalID}`).modal('show');
         },
-
+        
         remove(id) {
             this.$swal({
                 title: "Are you sure?",
@@ -143,7 +140,7 @@ export default {
                 }
             }).then((result) => {
                 if (result) {
-                    this.$axios.delete(`/api/admin/customer/delete`, {
+                    this.$axios.delete(`/api/admin/level/delete`, {
                         data: { 
                             id: id,
                             page: this.dataCurrentPage,
@@ -155,7 +152,7 @@ export default {
 
                             if (data.status) {
                                 swal('Success', (data.message || 'OK'), 'success');
-                                this.getCustomers();
+                                this.getLevels();
 
                             } else {
                                 swal('Ops', (data.message || 'Error'), 'error');
@@ -165,7 +162,7 @@ export default {
                             console.warn(response);
                         }
                     }).catch(error => {
-                        console.error('CustomersList.vue - Exception on method remove()', error);
+                        console.error('LevelsList.vue - Exception on method remove()', error);
                     });
                 }
             });
@@ -174,39 +171,21 @@ export default {
         createDefaultObject() {
             return {
                 id: null,
-                name: null,
-                status: 'new',
-                document: null,
-                numbers: [
-                    {
-                        id: null,
-                        number: null,
-                        numbersPreferences: [
-                            {
-                                id: null,
-                                name: null,
-                                value: 0
-                            }
-                        ]
-                    }
-                ],
-                user: {
-                    id: null,
-                    name: null,
-                    email: null,
-                    image: null
-                }
+                type: null,
+                can_view: [
+                    'customers', 'numbers', 'numbers_preferences', 'users', 'levels', 'logs'
+                ]
             };
         },
 
         paginateChanged(data) {
             this.dataPaginate = data ? parseInt(data) : 10;
-            this.getCustomers();
+            this.getLevels();
         },
 
         loadPage(data) {
             this.dataCurrentPage = data;
-            this.getCustomers();
+            this.getLevels();
         }
     }
 };

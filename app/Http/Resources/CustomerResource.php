@@ -34,7 +34,7 @@ class CustomerResource extends JsonResource {
             'name'     => $this->name,
             'document' => $this->document,
             'status'   => $this->status,
-            'date'     => $this->created_at,
+            'date'     => $this->created_at->format('d M Y H:m:i'),
             'user'     => [
                 'id'    => $this->user->id,
                 'name'  => $this->user->name,

@@ -3,12 +3,17 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class CustomerRequest extends FormRequest {
 
     public function authorize() {
-        // TODO: Verify this line:
-        return true;
+        // Authorized only admin users
+        if (auth()->check() && Gate::allows('access-admin', auth()->user())) {
+            return true;
+        }
+
+        return false;
     }
 
     public function rules() {
@@ -16,7 +21,6 @@ class CustomerRequest extends FormRequest {
             'user_id'   => 'bail|required|numeric',
             'name'      => 'bail|required|max:255',
             'document'  => 'bail|required|min:6|max:12',
-            'image'     => 'bail|mimes:jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF|max:2048',
             'status'    => 'bail|required'
         ];
     }

@@ -24,7 +24,7 @@ class AdminController extends Controller {
     }
 
     public function numbersPreferences() {
-        return view('admin.preferences', ['title' => 'Numbers Preferences', 'link' => 'numbers_preferences']);
+        return view('admin.numbers_preferences', ['title' => 'Numbers Preferences', 'link' => 'numbers_preferences']);
     }
 
     public function users() {
@@ -36,6 +36,7 @@ class AdminController extends Controller {
     }
 
     public function logs() {
-        return view('admin.logs', ['title' => 'Logs', 'link' => 'logs']);
+        $audicts = \App\Models\Audict::all();
+        return view('admin.logs', ['title' => 'Logs', 'link' => 'logs', 'audicts' => $audicts]);
     }
 }

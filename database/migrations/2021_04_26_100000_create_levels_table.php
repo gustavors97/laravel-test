@@ -10,7 +10,8 @@ class CreateLevelsTable extends Migration {
     public function up() {
         Schema::create('levels', function (Blueprint $table) {
             $table->bigIncrements('id')->unique();
-            $table->string('type');
+            $table->string('type', 255);
+            $table->string('can_view', 255);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -4,7 +4,7 @@
 
 @section('admin_content')
 
-    <customers-list :paginate="10"></customers-list>
+    <customers-list :paginate="10" />
 
 @endsection
 

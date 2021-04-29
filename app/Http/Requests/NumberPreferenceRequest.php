@@ -3,12 +3,17 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class NumberPreferenceRequest extends FormRequest {
     
     public function authorize() {
-        // TODO: Verify this line:
-        return true;
+        // Authorized only admin users
+        if (auth()->check() && Gate::allows('access-admin', auth()->user())) {
+            return true;
+        }
+
+        return false;
     }
 
     public function rules() {

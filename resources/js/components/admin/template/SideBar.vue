@@ -1,12 +1,13 @@
 <template>
     <div id="sidebar-wrapper">
         <div class="sidebar-heading">
-            <img :src="this.dataMainPage + '/img/favicon.svg'" alt="VAITEL" class="ml-3 mt-3 mb-4 mr-auto d-flex" style="width: 80px">
+            <img :src="this.dataMainPage + '/img/favicon.svg'" alt="VAITEL" class="ml-3 mt-3 mb-4 mr-auto d-flex" width="80">
         </div>
 
         <div class="list-menu top-radius-corner h-100">
             <div class="list-group ml-3">
-                <a href="#" class="list-group-item my-2 d-flex align-items-center p-0"
+                <a v-if="this.dataUser.can_view.indexOf('customers') >= 0"
+                    href="#" class="list-group-item my-2 d-flex align-items-center p-0"
                     :class="(this.dataCurrentLink == 'customers') ? 'menu-list-item-active' : ''"
                     @click="url('/admin/customers')">
                     <span class="mr-2 d-flex align-items-center justify-content-center">
@@ -15,7 +16,8 @@
                     Customers
                 </a>
                 
-                <a href="#" class="list-group-item my-2 d-flex align-items-center p-0"
+                <a v-if="this.dataUser.can_view.indexOf('numbers') >= 0"
+                    href="#" class="list-group-item my-2 d-flex align-items-center p-0"
                     :class="(this.dataCurrentLink == 'numbers') ? 'menu-list-item-active' : ''"
                     @click="url('/admin/numbers')">
                     <span class="mr-2 d-flex align-items-center justify-content-center">
@@ -24,7 +26,8 @@
                     Numbers
                 </a>
 
-                <a href="#" class="list-group-item my-2 d-flex align-items-center p-0"
+                <a v-if="this.dataUser.can_view.indexOf('numbers_preferences') >= 0"
+                    href="#" class="list-group-item my-2 d-flex align-items-center p-0"
                     :class="(this.dataCurrentLink == 'numbers_preferences') ? 'menu-list-item-active' : ''"
                     @click="url('/admin/numbers_preferences')">
                     <span class="mr-2 d-flex align-items-center justify-content-center">
@@ -33,7 +36,8 @@
                     Numbers Preferences
                 </a>
 
-                <a href="#" class="list-group-item my-2 d-flex align-items-center p-0"
+                <a v-if="this.dataUser.can_view.indexOf('users') >= 0"
+                    href="#" class="list-group-item my-2 d-flex align-items-center p-0"
                     :class="(this.dataCurrentLink == 'users') ? 'menu-list-item-active' : ''"
                     @click="url('/admin/users')">
                     <span class="mr-2 d-flex align-items-center justify-content-center">
@@ -42,7 +46,8 @@
                     Users
                 </a>
 
-                <a href="#" class="list-group-item my-2 d-flex align-items-center p-0"
+                <a v-if="this.dataUser.can_view.indexOf('levels') >= 0"
+                    href="#" class="list-group-item my-2 d-flex align-items-center p-0"
                     :class="(this.dataCurrentLink == 'levels') ? 'menu-list-item-active' : ''"
                     @click="url('/admin/levels')">
                     <span class="mr-2 d-flex align-items-center justify-content-center">
@@ -51,7 +56,8 @@
                     Levels
                 </a>
 
-                <a href="#" class="list-group-item my-2 d-flex align-items-center p-0"
+                <a v-if="this.dataUser.can_view.indexOf('logs') >= 0"
+                    href="#" class="list-group-item my-2 d-flex align-items-center p-0"
                     :class="(this.dataCurrentLink == 'logs') ? 'menu-list-item-active' : ''"
                     @click="url('/admin/logs')">
                     <span class="mr-2 d-flex align-items-center justify-content-center">
@@ -78,6 +84,7 @@ export default {
 
     data() {
         return {
+            dataUser: this.$store.state.user,
             dataCurrentLink: this.current_link,
             dataMainPage: window.location.origin
         };
