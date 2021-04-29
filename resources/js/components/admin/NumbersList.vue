@@ -9,7 +9,7 @@
 
         <numbers-modal v-if="dataUser.levels.indexOf('admin') >= 0"
             :modal_id="this.dataModalID" 
-            @onSubmitFormNumber="getNumbers" 
+            @onSubmitedFormNumber="getNumbers" 
             ref="numbers_modal" />
 
         <div class="table-responsive pt-4 pr-3">
@@ -29,7 +29,7 @@
                 <tbody>
                     <tr v-for="(number, index) in this.dataNumbers" :key="index" :id="number.id">
                         <th scope="row" class="text-truncate">{{ number.id }}</th>
-                        <td class="text-truncate">{{ number.customer }}</td>
+                        <td class="text-truncate">{{ number.customer.name }}</td>
                         <td class="text-truncate">{{ number.number }}</td>
                         <td class="text-truncate">{{ number.status }}</td>
                         <td class="text-truncate">{{ number.date }}</td>
@@ -173,7 +173,6 @@ export default {
         createDefaultObject() {
             return {
                 id: null,
-                customer_id: null,
                 customer: null,
                 number: null,
                 status: null

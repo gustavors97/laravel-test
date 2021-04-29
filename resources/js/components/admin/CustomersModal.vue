@@ -10,28 +10,25 @@
                     <div class="modal-body" v-if="dataCustomer">
                         <!-- CUSTOMER DATA -->
                         <div class="row">
-                            <h4 class="font-weight-bold">Customer data:</h4>
-                            <input type="hidden" id="customer_user_id" v-model="dataCustomer.user_id">
-
-                            <div class="form-group col-12 col-md-4 mb-3">
-                                <label for="customer_name">Name*:</label>
-                                <input type="text" id="customer_name" name="customer_name" 
+                            <div class="form-group col-12 col-md-6 mb-3">
+                                <label for="name">Name*:</label>
+                                <input type="text" id="name" name="name" 
                                     autocomplete="off" spellcheck="false" class="form-control"
                                     required="required" v-model="dataCustomer.name">
                                 <small class="invalid-feedback">Please, fill this field!</small>
                             </div>
 
-                            <div class="form-group col-12 col-md-4 mb-3">
-                                <label for="customer_document">Document*:</label>
-                                <input type="text" id="customer_document" v-mask="'############'"
+                            <div class="form-group col-12 col-md-6 mb-3">
+                                <label for="document">Document*:</label>
+                                <input type="text" id="document" v-mask="'############'"
                                     autocomplete="off" spellcheck="false" class="form-control" 
                                     required="required" v-model="dataCustomer.document">
                                 <small class="invalid-feedback">Please, fill this field!</small>
                             </div>
 
-                            <div class="form-group col-12 col-md-4 mb-3">
-                                <label for="customer_status">Customer status*:</label>
-                                <select id="customer_status" class="form-control" v-model="dataCustomer.status">
+                            <div class="form-group col-12 col-md-6 mb-3">
+                                <label for="status">Customer status*:</label>
+                                <select id="status" class="form-control" v-model="dataCustomer.status">
                                     <option value="new">New</option>
                                     <option value="active">Active</option>
                                     <option value="suspended">Suspended</option>
@@ -39,32 +36,26 @@
                                 </select>
                                 <small class="invalid-feedback">Please, fill this field!</small>
                             </div>
-                        </div>
 
-                        <!-- USER DATA -->
-                        <div class="row">
-                            <h4 class="font-weight-bold">User data:</h4>
-                            <input type="hidden" id="user_id" v-model="dataCustomer.user.id">
+                            <div class="form-group col-12 col-md-6 mb-3">
+                                <label for="can_view">User*:</label>
+                                <multiselect
+                                    v-model="dataCustomer.user"
+                                    :options="dataUsers || []"
+                                    :multiple="false"
+                                    :preserve-search="true"
+                                    :close-on-select="false"
+                                    :clear-on-select="false"
+                                    :preselect-first="false"
+                                    :custom-label="customLabelUsers"
+                                    track-by="id">
+                                </multiselect>
 
-                            <div class="form-group col-12 col-md-3 mb-3">
-                                <label for="customer_name">Email*:</label>
-                                <input type="text" id="user_email" name="customer_name" 
-                                    autocomplete="off" spellcheck="false" class="form-control"
-                                    required="required" v-model="dataCustomer.name">
                                 <small class="invalid-feedback">Please, fill this field!</small>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <h4 class="font-weight-bold">Numbers data:</h4>
-                            <input type="hidden" id="user_id" v-model="dataCustomer.user.id">
-
-                            
-                        </div>
-
                         <small class="font-italic text-muted mb-0">* Required fields</small>
-
-
                     </div>
 
                     <div class="modal-footer d-flex justify-content-center">
@@ -82,6 +73,7 @@
 <script>
 
 import { mask } from 'vue-the-mask';
+import Multiselect from "vue-multiselect";
 
 export default {
     props: {
@@ -92,7 +84,11 @@ export default {
     },
     computed: {},
     watch: {},
-    components: {},
+
+    components: {
+        Multiselect
+    },
+
     directives: { mask },
 
     data() {
@@ -103,7 +99,8 @@ export default {
             dataModalButtonSave: {
                 text: 'SAVE',
                 disabled: this.modal_button_save_disabled
-            }
+            },
+            dataUsers: this.getUsers()
         };
     },
 
@@ -120,8 +117,8 @@ export default {
         saveCustomer() {
             let form = $("#form-customer")[0];
 
-            if (form.checkValidity()) {
-                this.dataModalButtonSave.text = "AGUARDE...";
+            if (form.checkValidity() && this.dataCustomer.user) {
+                this.dataModalButtonSave.text = "Loading...";
                 this.dataModalButtonSave.disabled = true;
 
                 if (this.dataType == 'create')
@@ -135,9 +132,27 @@ export default {
             }
         },
 
+        getUsers() {
+            this.$axios.get(`/api/admin/user/getUsers`).then(response => {
+                if (response.status == 200) {
+                    this.dataUsers = response.data.data;
+                } else {
+                    console.warn(response);
+                }
+
+            }).catch(error => {
+                console.error('UsersModal.vue - Exception on method getUsers()', error);
+            });
+        },
+
         create() {
             this.$axios.post(`/api/admin/customer/create`, {
-                customer: this.dataCustomer
+                user_id: this.dataCustomer.user.id,
+                name: this.dataCustomer.name,
+                document: this.dataCustomer.document,
+                status: this.dataCustomer.status,
+                user: this.dataCustomer.user,
+                numbers: this.dataCustomer.numbers
             }).then(response => {
                 if (response.status == 200) {
                     let data = response.data.data
@@ -166,7 +181,11 @@ export default {
 
         update() {
             this.$axios.put(`/api/admin/customer/update`, {
-                customer: this.dataCustomer
+                id: this.dataCustomer.id,
+                user_id: this.dataCustomer.user.id,
+                name: this.dataCustomer.name,
+                document: this.dataCustomer.document,
+                status: this.dataCustomer.status
             }).then(response => {
                 if (response.status == 200) {
                     let data = response.data.data
@@ -194,10 +213,16 @@ export default {
         cleanButtonSave() {
             this.dataModalButtonSave.text = "SAVE";
             this.dataModalButtonSave.disabled = false;
+        },
+
+        customLabelUsers({ name }) {
+            return `${name}`;
         }
     }
 };
 </script>
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
 <style scoped>
 

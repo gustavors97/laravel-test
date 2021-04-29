@@ -2,6 +2,7 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}" media="all">
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
 @endsection
 
 @section('content')

@@ -9,6 +9,7 @@ use App\Models\Customer;
 use App\Http\Resources\CustomerResource;
 use App\Http\Requests\CustomerRequest;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Controllers\Api\NumberController;
 
 class CustomerController extends Controller {
 
@@ -51,8 +52,6 @@ class CustomerController extends Controller {
 
     // Create a new customer
     public function create(CustomerRequest $request) {
-        dd($request->all());
-
         $customer = Customer::create($request->all());
         return $this->response($customer, 'create');
     }
@@ -68,11 +67,25 @@ class CustomerController extends Controller {
     // Delete an exists customer
     public function delete(Request $request) {
         if (auth()->check() && Gate::allows('access-admin', auth()->user())) {
-            $customer = Customer::find($request->id)
-                                ->delete();
+            NumberController::deleteByCustumerID($request->id);
+            $customer = Customer::find($request->id)->delete();
         }
 
         return $this->response(($customer ?? null), 'delete');
+    }
+
+    // Delete old values in customer when user is removed
+    public static function deleteByUserID($user_id) {
+        if (auth()->check() && Gate::allows('access-admin', auth()->user())) {
+            $customers = Customer::where('user_id', $user_id)->get();
+
+            foreach ($customers as $customer) {
+                NumberController::deleteByCustumerID($customer->id);
+                $customer->delete();
+            }
+        }
+
+        return false;
     }
 
     // Default response

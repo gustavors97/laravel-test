@@ -9,7 +9,7 @@
 
         <users-modal v-if="dataUserState.levels.indexOf('admin') >= 0"
             :modal_id="this.dataModalID" 
-            @onSubmitFormUsers="getUsers" 
+            @onSubmitedFormUser="getUsers" 
             ref="users_modal" />
 
         <div class="table-responsive pt-4 pr-3">
@@ -127,7 +127,7 @@ export default {
             });
         },
 
-        openModal(data, type) {            
+        openModal(data, type) {
             this.$refs.users_modal.dataUser = (data || this.createDefaultObject());
             this.$refs.users_modal.dataType = type;
             $(`#${this.dataModalID}`).modal('show');
@@ -177,7 +177,8 @@ export default {
                 id: null,
                 name: null,
                 email: null,
-                image: null
+                image: null,
+                levels: []
             };
         },
 

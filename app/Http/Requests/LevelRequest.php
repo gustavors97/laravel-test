@@ -18,8 +18,8 @@ class LevelRequest extends FormRequest {
 
     public function rules() {
         return [
-            'type'  => 'bail|required|max:255',
-            'level' => 'bail|required|max:255'
+            'type'     => 'bail|required|max:255',
+            'can_view' => 'bail|required|max:255'
         ];
     }
 
@@ -29,7 +29,7 @@ class LevelRequest extends FormRequest {
             'type.max'      => 'The content of the type field is too large!',
 
             'can_view.required' => 'The can_view field is required!',
-            'can_vide.max'      => 'The content of the can_view field is too large!',
+            'can_view.max'      => 'The content of the can_view field is too large!',
         ];
     }
 }

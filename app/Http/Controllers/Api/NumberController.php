@@ -74,11 +74,25 @@ class NumberController extends Controller {
     // Delete an exists number
     public function delete(Request $request) {
         if (auth()->check() && Gate::allows('access-admin', auth()->user())) {
-            $number = Number::find($request->id)
-                            ->delete();
+            $number = Number::find($request->id)->delete();
+            NumberPreferenceController::deleteByNumberID($request->id); // Delete Number Preference
         }
 
         return $this->response(($number ?? null), 'delete');
+    }
+
+    // Delete old values in number when customer is removed
+    public static function deleteByCustumerID($customer_id) {
+        if (auth()->check() && Gate::allows('access-admin', auth()->user())) {
+            $numbers = Number::where('customer_id', $customer_id)->get();
+
+            foreach ($numbers as $number) {
+                NumberPreferenceController::deleteByNumberID($number->id);
+                $number->delete();
+            }
+        }
+
+        return false;
     }
 
     // Default response

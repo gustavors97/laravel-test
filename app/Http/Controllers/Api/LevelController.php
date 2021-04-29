@@ -9,6 +9,7 @@ use App\Models\Level;
 use App\Http\Resources\LevelResource;
 use App\Http\Requests\LevelRequest;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Controllers\Api\UserController;
 
 class LevelController extends Controller {
 
@@ -51,14 +52,20 @@ class LevelController extends Controller {
 
     // Create a new level
     public function create(LevelRequest $request) {
-        $level = Level::create($request->all());
+        $level = Level::create([
+            'type'     => $request->type,
+            'can_view' => implode(',', json_decode($request->can_view))
+        ]);
         return $this->response($level, 'create');
     }
 
     // Update an exists level
     public function update(LevelRequest $request) {
         $level = Level::find($request->id)
-                      ->update($request->all());
+                      ->update([
+                          'type'     => $request->type,
+                          'can_view' => implode(',', json_decode($request->can_view))
+                      ]);
 
         return $this->response($level, 'update');
     }
@@ -66,8 +73,8 @@ class LevelController extends Controller {
     // Delete an exists level
     public function delete(Request $request) {
         if (auth()->check() && Gate::allows('access-admin', auth()->user())) {
-            $level = Level::find($request->id)
-                          ->delete();
+            UserController::deleteByLevelID($request->id);
+            $level = Level::find($request->id)->delete();
         }
 
         return $this->response(($level ?? null), 'delete');

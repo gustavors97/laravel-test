@@ -9,7 +9,7 @@
 
         <levels-modal v-if="dataUser.levels.indexOf('admin') >= 0"
             :modal_id="this.dataModalID" 
-            @onSubmitFormLevel="getLevels" 
+            @onSubmitedFormLevel="getLevels" 
             ref="levels_modal" />
 
         <div class="table-responsive pt-4 pr-3">
@@ -172,9 +172,7 @@ export default {
             return {
                 id: null,
                 type: null,
-                can_view: [
-                    'customers', 'numbers', 'numbers_preferences', 'users', 'levels', 'logs'
-                ]
+                can_view: null
             };
         },
 

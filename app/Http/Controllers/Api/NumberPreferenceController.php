@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Cache;
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Number;
@@ -56,20 +57,23 @@ class NumberPreferenceController extends Controller {
         return $this->response($numberPreference, 'create');
     }
 
-    // TODO: Test
     public static function createDefaultPreferences(Number $number) {
-        $numbersPreferences = NumberPreference::insert(
+        $numbersPreferences = NumberPreference::insert([
             [
-                'number_id' => $number->id,
-                'name'      => 'auto_attendant',
-                'value'     => '1'
+                'number_id'  => $number->id,
+                'name'       => 'auto_attendant',
+                'value'      => '1',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ],
             [
-                'number_id' => $number->id,
-                'name'      => 'voicemail_enabled',
-                'value'     => '1'
+                'number_id'  => $number->id,
+                'name'       => 'voicemail_enabled',
+                'value'      => '1',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ]
-        );
+        ]);
 
         return $numbersPreferences;
     }
@@ -90,6 +94,16 @@ class NumberPreferenceController extends Controller {
         }
 
         return $this->response(($numberPreference ?? null), 'delete');
+    }
+
+    // Delete old values in number preferences when number is removed
+    public static function deleteByNumberID($number_id) {
+        if (auth()->check() && Gate::allows('access-admin', auth()->user())) {
+            return NumberPreference::where('number_id', $number_id) 
+                                    ->delete();
+        }
+
+        return false;
     }
 
     // Default response

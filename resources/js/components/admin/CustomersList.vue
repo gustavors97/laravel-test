@@ -9,7 +9,7 @@
 
         <customers-modal v-if="dataUser.levels.indexOf('admin') >= 0"
             :modal_id="this.dataModalID" 
-            @onSubmitFormCustomer="getCustomers" 
+            @onSubmitedFormCustomer="getCustomers" 
             ref="customers_modal" />
 
         <div class="table-responsive pt-4 pr-3">
@@ -177,25 +177,7 @@ export default {
                 name: null,
                 status: 'new',
                 document: null,
-                numbers: [
-                    {
-                        id: null,
-                        number: null,
-                        numbersPreferences: [
-                            {
-                                id: null,
-                                name: null,
-                                value: 0
-                            }
-                        ]
-                    }
-                ],
-                user: {
-                    id: null,
-                    name: null,
-                    email: null,
-                    image: null
-                }
+                user: null
             };
         },
 

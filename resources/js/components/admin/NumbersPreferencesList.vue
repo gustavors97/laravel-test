@@ -9,7 +9,7 @@
 
         <numbers-preferences-modal v-if="dataUser.levels.indexOf('admin') >= 0"
             :modal_id="this.dataModalID" 
-            @onSubmitFormNumberPreference="getNumbersPreferences" 
+            @onSubmitedFormNumberPreference="getNumbersPreferences" 
             ref="numbers_preferences_modal" />
 
         <div class="table-responsive pt-4 pr-3">
@@ -17,6 +17,7 @@
                 <thead>
                     <tr>
                         <th scope="col" class="font-weight-bold text-truncate">#</th>
+                        <th scope="col" class="font-weight-bold text-truncate">Customer</th>
                         <th scope="col" class="font-weight-bold text-truncate">Number</th>
                         <th scope="col" class="font-weight-bold text-truncate">Name</th>
                         <th scope="col" class="font-weight-bold text-truncate">Value</th>
@@ -29,7 +30,8 @@
                 <tbody>
                     <tr v-for="(numberPreference, index) in this.dataNumbersPreferences" :key="index" :id="numberPreference.id">
                         <th scope="row" class="text-truncate">{{ numberPreference.id }}</th>
-                        <td class="text-truncate">{{ numberPreference.number }}</td>
+                        <td class="text-truncate">{{ numberPreference.customer.name }}</td>
+                        <td class="text-truncate">{{ numberPreference.number.number }}</td>
                         <td class="text-truncate">{{ numberPreference.name }}</td>
                         <td class="text-truncate">{{ numberPreference.value }}</td>
                         <td class="text-truncate">{{ numberPreference.date }}</td>

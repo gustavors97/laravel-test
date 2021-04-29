@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest {
 
@@ -17,12 +18,20 @@ class UserRequest extends FormRequest {
     }
 
     public function rules() {
-        return [
-            'name'     => 'bail|required',
-            'email'    => 'bail|required|unique',
-            'password' => 'bail|required',
-            'image'     => 'bail|mimes:jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF|max:2048'
-        ];
+        if ($this->getMethod() == 'POST') { // CREATE
+            return [
+                'name'     => 'bail|required',
+                'email'    => 'bail|required|unique:users,email',
+                'password' => 'bail|required',
+                'image'    => 'bail|mimes:jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF|max:2048'
+            ];
+
+        } else {    // UPDATE (not require password)
+            return [
+                'name'  => 'bail|required',
+                'image' => 'bail|mimes:jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF|max:2048'
+            ];
+        }
     }
 
     public function messages() {

@@ -32,7 +32,7 @@ class User extends Authenticatable implements Auditable {
     ];
 
     public function customers() {
-        return $this->hasMany(CustomersModel::class, 'user_id', 'id');
+        return $this->hasMany(Customer::class, 'user_id', 'id');
     }
 
     public function userLevels() {

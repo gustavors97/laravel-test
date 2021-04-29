@@ -6,10 +6,9 @@
 `git clone https://github.com/gustavors97/laravel-test`
 
 * Install python on lasted version (necessary to compact VueJS components): \
-// URL
+https://www.python.org/downloads/
 
 <br>
-
 ## On the project root: 
 
 * Install composer dependencies: \

@@ -6,9 +6,11 @@ use Cache;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\UserLevel;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Controllers\Api\CustomerController;
 
 class UserController extends Controller {
 
@@ -51,25 +53,69 @@ class UserController extends Controller {
 
     // Create a new user
     public function create(UserRequest $request) {
-        $user = User::create($request->all());
+        $user = User::create([
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => bcrypt($request->password),
+            'image'    => $request->image
+        ]);
+
+        // Adding the user_level
+        foreach ($request->levels as $level) {
+            UserLevel::create([
+                'user_id'  => $user->id,
+                'level_id' => $level['id']
+            ]);
+        }
+
         return $this->response($user, 'create');
     }
 
     // Update an exists user
     public function update(UserRequest $request) {
         $user = User::find($request->id)
-                    ->update($request->all());
+                    ->update([
+                        'name'  => $request->name,
+                        'email' => $request->email,
+                        'image' => $request->image
+                    ]);
+
+        // Delete old references to user_level
+        UserLevel::where('user_id', $request->id)->delete();
+
+        // Adding the user_level
+        foreach ($request->levels as $level) {
+            UserLevel::create([
+                'user_id'  => $request->id,
+                'level_id' => $level['id']
+            ]);
+        }
 
         return $this->response($user, 'update');
     }
 
     public function delete(Request $request) {
         if (auth()->check() && Gate::allows('access-admin', auth()->user())) {
-            $user = User::find($request->id)
-                        ->delete();
+            UserLevel::where('user_id', $request->id)->delete();
+            CustomerController::deleteByUserID($request->id);
+            $user = User::find($request->id)->delete();
         }
 
         return $this->response(($user ?? null), 'delete');
+    }
+
+    public static function deleteByLevelID($level_id) {
+        if (auth()->check() && Gate::allows('access-admin', auth()->user())) {
+            $usersLevels = UserLevel::where('level_id', $level_id)->get();
+
+            foreach ($usersLevels as $userLevel) {
+                CustomerController::deleteByUserID($userLevel->user_id);
+                User::find($userLevel->user_id)->delete();
+                $userLevel->delete();
+            }
+        }
+
+        return false;
     }
 
     // Default response
